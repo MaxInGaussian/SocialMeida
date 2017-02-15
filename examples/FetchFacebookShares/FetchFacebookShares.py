@@ -20,4 +20,4 @@ except:
 
 fb_bot = FacebookBot()
 fb_bot.login("ericwowo2003@gmail.com", "3002owowcire")
-fb_bot.fetch_shared_posts_by_post_id(10154223184020772)
+all_shared_posts = fb_bot.fetch_shared_posts_by_post_id(10154223184020772)
