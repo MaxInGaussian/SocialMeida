@@ -91,4 +91,4 @@ class FacebookBot(Bot):
             print(share_time.get_attribute('title'), user_name.text)
             print(post_content.text)
             ind += 1
-        return pd.DataFrame(shared_posts_dict)
+        return pd.DataFrame.from_dict(shared_posts_dict)
