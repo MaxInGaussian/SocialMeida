@@ -69,26 +69,30 @@ class FacebookBot(Bot):
             return None
         ind = 0
         for post in all_shared_posts:
-            share_time = post.find_element_by_xpath(share_tme_xpath)
-            shared_posts_dict['share_time'][ind] = share_time.get_attribute('title')
-            user_name = post.find_element_by_class_name(user_name_class)
-            shared_posts_dict['user_name'][ind] = user_name.text
-            user_link = user_name.find_element_by_tag_name("a")
-            shared_posts_dict['user_link'][ind] = user_link.get_attribute('href')
-            post_content = post.find_element_by_xpath(post_content_xpath)
             try:
-                post_content.find_element_by_class_name('see_more_link').click()
+                share_time = post.find_element_by_xpath(share_tme_xpath)
+                shared_posts_dict['share_time'][ind] = share_time.get_attribute('title')
+                user_name = post.find_element_by_class_name(user_name_class)
+                shared_posts_dict['user_name'][ind] = user_name.text
+                user_link = user_name.find_element_by_tag_name("a")
+                shared_posts_dict['user_link'][ind] = user_link.get_attribute('href')
+                post_content = post.find_element_by_xpath(post_content_xpath)
+                try:
+                    post_content.find_element_by_class_name('see_more_link').click()
+                except:
+                    pass
+                shared_posts_dict['post_content'][ind] = post_content.text
+                post_link = post.find_element_by_xpath(post_link_xpath)
+                shared_posts_dict['post_link'][ind] = post_link.get_attribute('href')
+                try:
+                    num_likes = int(post.find_element_by_class_name(num_likes_class).text)
+                except:
+                    num_likes = 0
+                shared_posts_dict['num_likes'][ind] = num_likes
+                print(share_time.get_attribute('title'), user_name.text)
+                print(post_content.text)
+                ind += 1
             except:
-                pass
-            shared_posts_dict['post_content'][ind] = post_content.text
-            post_link = post.find_element_by_xpath(post_link_xpath)
-            shared_posts_dict['post_link'][ind] = post_link.get_attribute('href')
-            try:
-                num_likes = int(post.find_element_by_class_name(num_likes_class).text)
-            except:
-                num_likes = 0
-            shared_posts_dict['num_likes'][ind] = num_likes
-            print(share_time.get_attribute('title'), user_name.text)
-            print(post_content.text)
-            ind += 1
+                print('failure after', ind)
+                continue
         return pd.DataFrame.from_dict(shared_posts_dict)
